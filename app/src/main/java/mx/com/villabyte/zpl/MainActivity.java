@@ -13,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import com.zebra.sdk.printer.PrinterLanguage;
+
 import mx.com.villabyte.zpl.printer.PrinterZebra;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         final EditText txtZpl = (EditText) findViewById(R.id.txtZpl);
         if (txtZpl != null) {
+            /*
             txtZpl.setText("^XA\n" +
                     "^LL240\n" +
                     "^FO80,14^BY3\n" +
@@ -42,19 +45,84 @@ public class MainActivity extends AppCompatActivity {
                     "^FO20,175^AD^FD240.00 MXN^FS\n" +
                     "^FO250,175^AD^FD04/10/2018^FS\n" +
                     "^XZ");
+
+             */
+
+            // Este comando si funciona
+            /*
+            txtZpl.setText("! 0 200 200 210 1\r\n" +
+                    "TEXT 4 0 30 40 Hello World\r\n" +
+                    "FORM\r\n" +
+                    "PRINT\r\n");
+*/
+
+
+            // Este si funciona
+            txtZpl.setText("! 0 200 200 406 1\n" +
+                    "PW 575\n" +
+                    "TONE 0\n" +
+                    "SPEED 2\n" +
+                    "ON-FEED IGNORE\n" +
+                    "NO-PACE\n" +
+                    "BAR-SENSE\n" +
+                    "T 0 3 18 34 Entrada\n" +
+                    "L 15 70 562 70 2\n" +
+                    "T 0 3 29 243 ART\n" +
+                    "T 5 0 100 245 Sidral 200 ML RET\n" +
+                    "T 0 3 35 275 UM\n" +
+                    "T 5 0 100 277 Caja de 24\r\n" +
+                    "T 0 3 18 309 CANT\n" +
+                    "T 5 0 100 309 1,500 Botellas\n" +
+                    "PRINT\n");
+
+/*
+
+            // Impresion de qr
+
+            txtZpl.setText("! 0 200 200 500 1\r\n" +
+                    "B QR 10 100 M 2 U 10\r\n" +
+                    "MA,QR code ABC123\r\n" +
+                    "ENDQR\r\n" +
+                    "T 4 0 10 400 QR code ABC123\r\n" +
+                    "FORM\r\n" +
+                    "PRINT\r\n");
+*/
+            /*
+            txtZpl.setText("! 0 200 200 406 1\n" +
+                    "PW 575\n" +
+                    "TONE 0\n" +
+                    "SPEED 2\n" +
+                    "ON-FEED IGNORE\n" +
+                    "NO-PACE\n" +
+                    "BAR-SENSE\n" +
+                    "T 0 3 18 34 Entrada\n" +
+                    "L 15 70 562 70 2\n" +
+                    "T 0 3 29 243 ART\n" +
+                    "T 5 0 100 245 Sidral 200 ML RET\n" +
+                    "T 0 3 35 275 UM\n" +
+                    "T 5 0 100 277 Caja de 24\r\n" +
+                    "T 0 3 18 309 CANT\n" +
+                    "T 5 0 100 309 1,500 Botellas\n" +
+                    "B QR 10 100 M 2 U 10\r\n" +
+                    "MA,QR code ABC123\r\n" +
+                    "ENDQR\r\n" +
+                    "PRINT\n");
+*/
+
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //printer = "70:B9:50:78:E9:D6";
                 if (printer == null) {
                     Snackbar.make(view, "Seleccione la impresora", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
                 else {
                     try {
-                        PrinterZebra printerZebra = new PrinterZebra(printer);
+                        PrinterZebra printerZebra = new PrinterZebra(printer, PrinterLanguage.CPCL);
                         printerZebra.imprimirText(txtZpl.getText().toString());
                         printerZebra.closeConnection();
                     }

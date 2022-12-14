@@ -18,15 +18,24 @@ public class PrinterZebra {
     private ZebraPrinter zebraPrinter;
     private String macAddress;
 
+    PrinterLanguage language;
+
     public PrinterZebra() {
+        this.language = PrinterLanguage.ZPL;
     }
 
     public PrinterZebra(String macAddress) {
+        this();
         this.macAddress = macAddress;
     }
 
+    public PrinterZebra(String macAddress, PrinterLanguage language) {
+        this.macAddress = macAddress;
+        this.language = language;
+    }
+
     public void connectar() throws Exception {
-        connectar(PrinterLanguage.ZPL);
+        connectar(language);
     }
 
     public void connectar(PrinterLanguage language) throws Exception {
@@ -41,7 +50,7 @@ public class PrinterZebra {
     }
 
     public void imprimirText(String command) throws Exception {
-        imprimir("! U1 setvar \"device.languages\" \"zpl\"\n");
+        //imprimir("! U1 setvar \"device.languages\" \"zpl\"\n");
         imprimir(command);
     }
 
